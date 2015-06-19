@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Farmers-Cart</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">सेटिंग</string>
+    <string name="action_cart">Cart</string>
+    <string name="menu">Menu</string>
+    <string name="select_country_prompt">देश चुनें</string>
+
+    <string-array name="country_array">
+        <item>India</item>
+        <item>America</item>
+        <item>England</item>
+        <item>Africa</item>
+        <item>Australia</item>
+    </string-array>
+
+    <string name="select_selling_payment_prompt">Select Payment Option</string>
+
+    <string-array name="select_selling_payment_array">
+        <item>Paypal</item>
+    </string-array>
+
+    <string name="login">लॉग इन करें</string>
+    <string name="phone_no">फोन नंबर:</string>
+    <string name="password">पासवर्ड:</string>
+    <string name="register_here">यहां रजिस्टर करें</string>
+    <string name="registration">पंजीकरण</string>
+    <string name="register">रजिस्टर</string>
+    <string name="first_name">पहला नाम:</string>
+    <string name="last_name">उपनाम:</string>
+    <string name="phone">फोन:</string>
+    <string name="optional_phone">वैकल्पिक फोन:</string>
+    <string name="country">देश:</string>
+    <string name="state">राज्य:</string>
+    <string name="city">शहर:</string>
+    <string name="new_password">नया पासवर्ड:</string>
+    <string name="old_password">पुराना पासवर्ड:</string>
+    <string name="confirm_password">पासवर्ड की पुष्टि करें:</string>
+    <string name="save">सहेजें</string>
+    <string name="change_password">पासवर्ड बदलें</string>
+    <string name="type_old_password">प्रकार पुराने पासवर्ड</string>
+    <string name="type_new_password">नया पासवर्ड लिखें</string>
+    <string name="retype_new_password">नया पासवर्ड फिर से लिखें</string>
+    <string name="buying">क्रय</string>
+    <string name="selling">बेचना</string>
+    <string name="messages">संदेश</string>
+    <string name="log_out">लॉग आउट</string>
+    <string name="settings">सेटिंग</string>
+    <string name="my_buying">मेरा ख़रीदना</string>
+    <string name="my_selling">मेरा बेचना</string>
+    <string name="search">खोज</string>
+    <string name="category">श्रेणी :</string>
+    <string name="sub_category">उप श्रेणी : </string>
+    <string name="price">कीमत :</string>
+    <string name="total_quantity">कुल मात्रा :</string>
+    <string name="total_price">कुल कीमत : </string>
+    <string name="brand">ब्रांड का नाम : </string>
+    <string name="delivery_type">वितरण के प्रकार : </string>
+    <string name="item_type">आइटम प्रकार :  </string>
+    <string name="item_quantity">वस्तु की मात्रा :  </string>
+    <string name="item_cost">मद लागत (प्रति किलो) :  </string>
+    <string name="item_description">आइटम विवरण:   </string>
+    <string name="total_cost">कुल लागत :   </string>
+    <string name="add">जोड़ें  </string>
+    <string name="cancel">रद्द   </string>
+
+</resources>
