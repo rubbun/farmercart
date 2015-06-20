@@ -19,7 +19,7 @@
     <string name="select_selling_payment_prompt">Select Payment Option</string>
 
     <string-array name="select_selling_payment_array">
-        <item>Paypal</item>
+        <item>Cash On Delivery</item>
     </string-array>
 
     <string name="login">Login</string>
@@ -65,5 +65,6 @@
     <string name="total_cost">Total Cost :   </string>
     <string name="add">Add  </string>
     <string name="cancel">Cancel   </string>
+    <string name="address">Address</string>
 
 </resources>

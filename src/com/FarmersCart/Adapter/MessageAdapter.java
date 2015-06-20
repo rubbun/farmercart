@@ -59,6 +59,8 @@ public class MessageAdapter extends ArrayAdapter<MessageBean>{
 			mHolder.tv_name=(TextView)v.findViewById(R.id.tv_name);
 			mHolder.tv_time=(TextView)v.findViewById(R.id.tv_time);
 			mHolder.tv_message=(TextView)v.findViewById(R.id.tv_message);
+			mHolder.tv_phone=(TextView)v.findViewById(R.id.tv_phone);
+			mHolder.tv_address=(TextView)v.findViewById(R.id.tv_address);
 			v.setTag(mHolder);
 			
 		}else{
@@ -71,6 +73,8 @@ public class MessageAdapter extends ArrayAdapter<MessageBean>{
 		mHolder.tv_name.setText("From : "+arr.get(position).getmUserName());		
 		mHolder.tv_time.setText("Time : "+arr.get(position).getmTime());
 		mHolder.tv_message.setText("Message : "+arr.get(position).getmMessage());
+		mHolder.tv_phone.setText("Phone : "+arr.get(position).getPhone());
+		mHolder.tv_address.setText("Address : "+arr.get(position).getAddress());
 		
 		if(arr.get(position).getmMessageOpenFlag().equals("N")){
 			mHolder.tv_name.setTypeface(Typeface.DEFAULT_BOLD);
@@ -83,7 +87,7 @@ public class MessageAdapter extends ArrayAdapter<MessageBean>{
 	
 	public class ViewHolder {	
 		
-		public TextView tv_name,tv_time,tv_message;
+		public TextView tv_name,tv_time,tv_message, tv_phone, tv_address;
 	}
 
 }

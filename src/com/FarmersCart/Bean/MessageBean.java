@@ -4,32 +4,20 @@ public class MessageBean {
 	private String mUserName;
 	private String mUserId;
 	private String mMessage;
+	private String phone;
+	private String address;
 	private String mTime;
 	private String mMessageOpenFlag;
-	
-	public MessageBean(String id, String name, String message, String time, String open_flag){
+
+	public MessageBean(String mUserName, String mUserId, String mMessage, String phone, String address, String mTime, String mMessageOpenFlag) {
 		super();
-		this.mUserName=name;	
-		this.mUserId=id;
-		this.mMessage=message;
-		this.mTime=time;
-		this.mMessageOpenFlag=open_flag;
-	}
-
-	public String getmMessage() {
-		return mMessage;
-	}
-
-	public void setmMessage(String mMessage) {
+		this.mUserName = mUserName;
+		this.mUserId = mUserId;
 		this.mMessage = mMessage;
-	}
-
-	public String getmTime() {
-		return mTime;
-	}
-
-	public void setmTime(String mTime) {
+		this.phone = phone;
+		this.address = address;
 		this.mTime = mTime;
+		this.mMessageOpenFlag = mMessageOpenFlag;
 	}
 
 	public String getmUserName() {
@@ -48,6 +36,38 @@ public class MessageBean {
 		this.mUserId = mUserId;
 	}
 
+	public String getmMessage() {
+		return mMessage;
+	}
+
+	public void setmMessage(String mMessage) {
+		this.mMessage = mMessage;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getmTime() {
+		return mTime;
+	}
+
+	public void setmTime(String mTime) {
+		this.mTime = mTime;
+	}
+
 	public String getmMessageOpenFlag() {
 		return mMessageOpenFlag;
 	}
@@ -56,7 +76,4 @@ public class MessageBean {
 		this.mMessageOpenFlag = mMessageOpenFlag;
 	}
 
-	
-	
-	
 }

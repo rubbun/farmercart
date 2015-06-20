@@ -1,11 +1,9 @@
 package com.FarmersCart.Fragment;
 
 import java.util.ArrayList;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.FarmersCart.Adapter.BuyingAdapter;
 import com.FarmersCart.Adapter.MessageAdapter;
 import com.FarmersCart.Bean.BuyingCategoryBean;
@@ -15,7 +13,7 @@ import com.FarmersCart.Interface.IBase;
 import com.FarmersCart.Network.FarmersFarmFresh2Home;
 import com.FarmersCart.UI.BaseActivity;
 import com.FarmersCart.UI.R;
-
+import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -27,6 +25,7 @@ import android.view.View.OnClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
+@SuppressLint("ValidFragment")
 public class MessageFragment extends Fragment implements OnClickListener {
 	private BaseActivity base;
 	private IBase iBase ;
@@ -75,7 +74,7 @@ public class MessageFragment extends Fragment implements OnClickListener {
 					for(int i = 0 ; i<arr.length();i++){
 						JSONObject obj = arr.getJSONObject(i);
 						mMessageBean.add(new MessageBean(obj.getString("user_id"), obj.getString("name"),
-								obj.getString("message"), obj.getString("create_date"), obj.getString("opening_flag")));
+								obj.getString("message"),obj.getString("phone"),obj.getString("address"), obj.getString("create_date"), obj.getString("opening_flag")));
 					}
 				}
 				

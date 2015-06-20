@@ -8,6 +8,10 @@
         android:showAsAction="always"
         android:title="@string/action_cart"/>
     
-     
+     <item
+        android:id="@+id/action_login"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="@string/login"/>
 
 </menu>

@@ -20,7 +20,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 public class RegistrationActivity  extends BaseActivity{
-	private EditText et_reg_fname,et_reg_lname,et_reg_phone,et_reg_state,et_reg_city,et_reg_opt_phone ;
+	private EditText et_reg_fname,et_reg_lname,et_reg_phone,et_reg_state,et_reg_city,et_reg_opt_phone,et_address ;
 	private Spinner sp_reg_country ;
 	private Button btn_reg_submit ;
 	private String mUserId = "" ;
@@ -39,6 +39,7 @@ public class RegistrationActivity  extends BaseActivity{
 		et_reg_city = (EditText)findViewById(R.id.et_reg_city);
 		sp_reg_country = (Spinner)findViewById(R.id.sp_reg_country);
 		btn_reg_submit = (Button)findViewById(R.id.btn_reg_submit);
+		et_address = (EditText)findViewById(R.id.et_address);
 		
 		btn_reg_submit.setOnClickListener(this);
 		
@@ -81,6 +82,9 @@ public class RegistrationActivity  extends BaseActivity{
 		}else if(et_reg_phone.getText().toString().trim().length()==0){
 			et_reg_phone.setError("Please enter your Phone Number");
 			return false;
+		}else if(et_address.getText().toString().trim().length()==0){
+			et_address.setError("Please enter your Address");
+			return false;
 		}else if(et_reg_state.getText().toString().trim().length()==0 ){
 			et_reg_state.setError("Please enter your State");
 			return false;
@@ -109,6 +113,7 @@ public class RegistrationActivity  extends BaseActivity{
 		  		jsonObjSend.put("state", params[5]);
 		  		jsonObjSend.put("city", params[6]);
 		  		jsonObjSend.put("password", "1111");
+		  		jsonObjSend.put("address", et_address.getText().toString().trim());
 		  		
 				Log.e("SEND", jsonObjSend.toString());
 				

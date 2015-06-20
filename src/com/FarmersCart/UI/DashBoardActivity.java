@@ -349,7 +349,14 @@ public class DashBoardActivity extends BaseActivity implements IBase {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.splash, menu);
+		
+		
+		
+		if(app.getUserinfo().isLoggedin){
+			getMenuInflater().inflate(R.menu.splash, menu);
+		}else{
+			getMenuInflater().inflate(R.menu.splash1, menu);
+		}
 		return true;
 	}
 
@@ -361,9 +368,18 @@ public class DashBoardActivity extends BaseActivity implements IBase {
 		if (mDrawerToggle.onOptionsItemSelected(item)) {
 			return true;
 		}
+		
+		
 		int id = item.getItemId();
 		if (id == R.id.action_cart) {
 			displayView(8, true);
+			return true;
+		}
+		
+		if (id == R.id.action_login) {
+			Intent intent = new Intent(DashBoardActivity.this, LoginActivity.class);
+			startActivity(intent);
+			finish();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -460,7 +476,7 @@ public class DashBoardActivity extends BaseActivity implements IBase {
 					JSONArray arr = json.getJSONArray("message");
 					for (int i = 0; i < arr.length(); i++) {
 						JSONObject obj = arr.getJSONObject(i);
-						mMessageBean.add(new MessageBean(obj.getString("user_id"), obj.getString("name"), obj.getString("message"), obj.getString("create_date"), obj.getString("opening_flag")));
+						mMessageBean.add(new MessageBean(obj.getString("user_id"), obj.getString("name"), obj.getString("message"),obj.getString("phone"),obj.getString("address"), obj.getString("create_date"), obj.getString("opening_flag")));
 						if (obj.getString("opening_flag").equals("N")) {
 							message_counter++;
 						}

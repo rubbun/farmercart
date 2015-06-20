@@ -8,35 +8,45 @@ import org.json.JSONObject;
 
 import com.FarmersCart.Adapter.BuyingHistoryAdapter;
 import com.FarmersCart.Adapter.SellingHistoryAdapter;
-import com.FarmersCart.Adapter.SellingItemAdapter;
 import com.FarmersCart.Bean.BuyingHistory;
 import com.FarmersCart.Bean.SellingHistory;
-import com.FarmersCart.Bean.SellingSubCategoryBean;
 import com.FarmersCart.Constant.Constant;
 import com.FarmersCart.Interface.IBase;
 import com.FarmersCart.Network.FarmersFarmFresh2Home;
 import com.FarmersCart.UI.BaseActivity;
 import com.FarmersCart.UI.R;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+@SuppressLint("ValidFragment")
 public class HomeFragment extends Fragment implements OnClickListener {
 	private BaseActivity base;
 	private TextView tv_buy,tv_sell ,tv_nothing_found;
 	private ListView lv_buy_history,lv_sell_history ;
 	private ArrayList<SellingHistory> mSellingHistory = new ArrayList<SellingHistory>() ;
 	private ArrayList<BuyingHistory> mBuyingHistory= new ArrayList<BuyingHistory>() ;
+	
+	private ArrayList<SellingHistory> mSellingHistorySearch = new ArrayList<SellingHistory>() ;
+	private ArrayList<BuyingHistory> mBuyingHistorySearch= new ArrayList<BuyingHistory>() ;
 	private IBase iBase ;
+	private EditText etSearch;
+	private int i = 1; // 1->buying      2->selling
+	
+	
 	public HomeFragment(BaseActivity base){
 		this.base  = base;	
 		this.iBase = (IBase) base;
@@ -53,11 +63,62 @@ public class HomeFragment extends Fragment implements OnClickListener {
 			
 			lv_buy_history = (ListView)v.findViewById(R.id.lv_buy_history);
 			lv_sell_history = (ListView)v.findViewById(R.id.lv_sell_history);
+			etSearch = (EditText)v.findViewById(R.id.etSearch);
 			
 			tv_buy.setOnClickListener(this);
 			tv_sell.setOnClickListener(this);
 			
 			new callTransaction().execute();
+			
+			
+			etSearch.addTextChangedListener(new TextWatcher() {
+				
+				@Override
+				public void onTextChanged(CharSequence s, int start, int before, int count) {
+					
+					if(i==1){
+						mBuyingHistorySearch.clear();
+						if(mBuyingHistory.size()>0){
+							for(int i=0; i<mBuyingHistory.size(); i++){
+								if(mBuyingHistory.get(i).getmBuyingCategoryName().toLowerCase().contains(s.toString().toLowerCase())){
+									mBuyingHistorySearch.add(mBuyingHistory.get(i));
+								}else if(mBuyingHistory.get(i).getmBuyingBrandName().toLowerCase().contains(s.toString().toLowerCase())){
+									mBuyingHistorySearch.add(mBuyingHistory.get(i));
+								}
+							}
+							lv_buy_history.setAdapter(new BuyingHistoryAdapter(getActivity(), R.layout.each_buy_row, mBuyingHistorySearch));	
+							
+						}
+					}else{
+
+						mSellingHistorySearch.clear();
+						if(mSellingHistory.size()>0){
+							for(int i=0; i<mSellingHistory.size(); i++){
+								if(mSellingHistory.get(i).getmSellingCategoryName().toLowerCase().contains(s.toString().toLowerCase())){
+									mSellingHistorySearch.add(mSellingHistory.get(i));
+								}else if(mSellingHistory.get(i).getmSellingSubCategoryName().toLowerCase().contains(s.toString().toLowerCase())){
+									mSellingHistorySearch.add(mSellingHistory.get(i));
+								}
+							}
+							lv_buy_history.setAdapter(new BuyingHistoryAdapter(getActivity(), R.layout.each_buy_row, mBuyingHistorySearch));	
+							
+						}
+					
+					}
+				}
+				
+				@Override
+				public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+					
+					
+				}
+				
+				@Override
+				public void afterTextChanged(Editable s) {
+					
+					
+				}
+			});
 			
 		    return v ;	
 		}
@@ -66,6 +127,8 @@ public class HomeFragment extends Fragment implements OnClickListener {
 		public void onClick(View arg0) {
 			// TODO Auto-generated method stub
 			if(arg0 == tv_buy){
+				etSearch.setText("");
+				i = 1;
 				tv_buy.setBackgroundColor(Color.parseColor("#00a5e2"));
 				tv_sell.setBackgroundColor(Color.parseColor("#ffffff"));
 				tv_buy.setTextColor(Color.parseColor("#ffffff"));
@@ -76,9 +139,15 @@ public class HomeFragment extends Fragment implements OnClickListener {
 					lv_buy_history.setVisibility(View.GONE);
 					tv_nothing_found.setVisibility(View.VISIBLE);
 					tv_nothing_found.setText("No Buying Prodct Found");
+				}else{
+					if(mBuyingHistory.size()>0){
+						lv_buy_history.setAdapter(new BuyingHistoryAdapter(getActivity(), R.layout.each_buy_row, mBuyingHistory));
+					}
 				}
 			}
 			if(arg0 == tv_sell){
+				etSearch.setText("");
+				i = 2;
 				tv_sell.setBackgroundColor(Color.parseColor("#00a5e2"));
 				tv_buy.setBackgroundColor(Color.parseColor("#ffffff"));
 				tv_sell.setTextColor(Color.parseColor("#ffffff"));
@@ -89,6 +158,10 @@ public class HomeFragment extends Fragment implements OnClickListener {
 					lv_sell_history.setVisibility(View.GONE);
 					tv_nothing_found.setVisibility(View.VISIBLE);
 					tv_nothing_found.setText("No Selling Prodct Found");
+				}else{
+					if(mSellingHistory.size()>0){
+						lv_sell_history.setAdapter(new SellingHistoryAdapter(getActivity(), R.layout.each_selling_row, mSellingHistory));
+					}
 				}
 			}
 		}

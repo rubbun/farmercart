@@ -124,7 +124,14 @@ public class LoginActivity extends BaseActivity{
 				Intent i = new Intent(LoginActivity.this,DashBoardActivity.class);
 				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				startActivity(i);*/
-				handler.sendEmptyMessageAtTime(1, 500);
+				if(Constant.sCartBean.size()>0){
+					handler.sendEmptyMessageAtTime(1, 500);
+				}else{
+					Intent i = new Intent(LoginActivity.this,DashBoardActivity.class);
+					i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP );
+					startActivity(i);
+				}
+				
 			}else{
 				Toast.makeText(LoginActivity.this,"Please Enter Correct Phone Number/Password", 
 		                Toast.LENGTH_SHORT).show();
