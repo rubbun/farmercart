@@ -6,11 +6,14 @@ import org.json.JSONObject;
 
 import com.FarmersCart.Adapter.CartAdapter;
 import com.FarmersCart.Constant.Constant;
+import com.FarmersCart.Events.EventGuestCheckout;
 import com.FarmersCart.Interface.IBase;
 import com.FarmersCart.Network.FarmersFarmFresh2Home;
 import com.FarmersCart.UI.BaseActivity;
 import com.FarmersCart.UI.R;
 
+import de.greenrobot.event.EventBus;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
@@ -26,6 +29,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+@SuppressLint("ValidFragment")
 public class CartFragment extends Fragment implements OnClickListener {
 
 	private BaseActivity base;
@@ -34,6 +38,7 @@ public class CartFragment extends Fragment implements OnClickListener {
 	private Button btn_checkout;
 	private JSONObject checkoutValues;
 	private IBase iBase ;
+	@SuppressLint("ValidFragment")
 	public CartFragment(BaseActivity base) {
 		this.base = base;
 		iBase =  (IBase) base ;
@@ -79,7 +84,12 @@ public class CartFragment extends Fragment implements OnClickListener {
 					switch (which) {
 					case DialogInterface.BUTTON_POSITIVE:
 						// Yes button clicked
-						callCheckout();
+						if(base.app.getUserinfo().isLoggedin){
+							callCheckout();
+						}else{
+							EventBus.getDefault().post(new EventGuestCheckout());
+						}
+						
 						break;
 
 					case DialogInterface.BUTTON_NEGATIVE:
@@ -134,6 +144,44 @@ public class CartFragment extends Fragment implements OnClickListener {
 	
 
 	}
+	
+	/*private void callCheckoutWithoutLogin() {
+		// TODO Auto-generated method stub
+		try {
+			
+
+			JSONArray checkoutArray = new JSONArray();
+
+			for (int i = 0; i < Constant.sCartBean.size(); i++) {
+				JSONObject list = new JSONObject();
+
+				list.put("buying_user_id", base.app.getUserinfo().ID);
+				//list.put("buying_user_name", base.app.getUserinfo().firstName+ " "+base.app.getUserinfo().lastName);
+				list.put("selling_user_id", Constant.sCartBean.get(i)
+						.getmUserId());
+				list.put("selling_subcategory_id", Constant.sCartBean.get(i)
+						.getmProductId());
+				list.put("selling_subcategory_name", Constant.sCartBean.get(i)
+						.getmProductName());
+				list.put("quantity", Constant.sCartBean.get(i).getmQuantity());
+				list.put("total_cost", Constant.sCartBean.get(i)
+						.getmTotalCost());
+				list.put("delivery_type", Constant.sCartBean.get(i)
+						.getmDeliveryType());
+
+				checkoutArray.put(list);
+			}
+
+			checkoutValues.put("schedule", checkoutArray);
+			new checkout().execute(checkoutValues);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	
+
+	}*/
 	
 	public class checkout extends AsyncTask<JSONObject, Void, Boolean>{
 		protected void onPreExecute() {

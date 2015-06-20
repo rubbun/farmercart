@@ -24,15 +24,15 @@ public class SplashActivity extends BaseActivity {
 			super.handleMessage(msg);
 			switch (msg.what) {
 			case HANDLER_MSG:	
-				if(app.getUserinfo().isLoggedin){
+				//if(app.getUserinfo().isLoggedin){
 					Intent i = new Intent(SplashActivity.this,DashBoardActivity.class);
 					i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 					startActivity(i);
-				}else{
+				/*}else{
 					Intent i = new Intent(SplashActivity.this,LoginActivity.class);
 					i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 					startActivity(i);
-				}
+				}*/
 				
 				break;
 

@@ -2,12 +2,14 @@ package com.FarmersCart.Fragment;
 
 import com.FarmersCart.Bean.CartBean;
 import com.FarmersCart.Constant.Constant;
+import com.FarmersCart.Events.EventAddtoCart;
 import com.FarmersCart.Interface.IBase;
 import com.FarmersCart.UI.BaseActivity;
 import com.FarmersCart.UI.LoginActivity;
 import com.FarmersCart.UI.R;
 import com.FarmersCart.Util.ImageLoader;
-
+import de.greenrobot.event.EventBus;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -23,6 +25,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+@SuppressLint("ValidFragment")
 public class BuyingEachItemFragment extends Fragment implements OnClickListener {
 	private BaseActivity base;
 	private Bundle bundle ;
@@ -119,6 +122,7 @@ public class BuyingEachItemFragment extends Fragment implements OnClickListener 
 						sp_buying_item_payment_type.getSelectedItem().toString().trim()));
 				Toast.makeText(getActivity(),"Item added to Cart", 
 		                Toast.LENGTH_SHORT).show();
+				EventBus.getDefault().post(new EventAddtoCart());
 			}
 		}
 }

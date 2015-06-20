@@ -32,6 +32,8 @@ import android.widget.TextView;
 
 import com.FarmersCart.Bean.MessageBean;
 import com.FarmersCart.Constant.Constant;
+import com.FarmersCart.Events.EventAddtoCart;
+import com.FarmersCart.Events.EventGuestCheckout;
 import com.FarmersCart.Fragment.BuyingEachItemFragment;
 import com.FarmersCart.Fragment.BuyingFragment;
 import com.FarmersCart.Fragment.BuyingItemFragment;
@@ -45,39 +47,34 @@ import com.FarmersCart.Fragment.SellingItemFragment;
 import com.FarmersCart.Interface.IBase;
 import com.FarmersCart.Network.FarmersFarmFresh2Home;
 
+import de.greenrobot.event.EventBus;
+
 public class DashBoardActivity extends BaseActivity implements IBase {
 	private LinearLayout list_slidermenu;
 	private DrawerLayout mDrawerLayout;
 	private ActionBarDrawerToggle mDrawerToggle;
-	private String selling_category_title = "", selling_category_id = "",
-			buying_category_title = "", buying_category_id = "";
-	private String selling_each_item_title = "", selling_each_item_image = "",
-			selling_each_item_description = "", selling_each_item_price = "",
-			selling_each_item_id = "";
-	private String buying_each_item_title = "", buying_each_item_image = "",
-			buying_each_item_price = "", buying_each_item_id = "",
-			brand_user_id = "", brand_user_name = "",
-			buying_each_item_description = "";
-	
-	private TextView tv_message ;
+	private String selling_category_title = "", selling_category_id = "", buying_category_title = "", buying_category_id = "";
+	private String selling_each_item_title = "", selling_each_item_image = "", selling_each_item_description = "", selling_each_item_price = "", selling_each_item_id = "";
+	private String buying_each_item_title = "", buying_each_item_image = "", buying_each_item_price = "", buying_each_item_id = "", brand_user_id = "", brand_user_name = "", buying_each_item_description = "";
+
+	private TextView tv_message;
 	private int message_counter = 0;
-	
+
 	private ArrayList<MessageBean> mMessageBean = new ArrayList<MessageBean>();
 	private Handler mHandle = new Handler();
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		EventBus.getDefault().register(this);
 		setContentView(R.layout.activity_dashboard);
 		list_slidermenu = (LinearLayout) findViewById(R.id.list_slidermenu);
 
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		
-		
 
 		View v;
-		LayoutInflater vi = (LayoutInflater) getApplicationContext()
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		v = vi.inflate(R.layout.layout_slider, null);
 		list_slidermenu.addView(v);
 		TextView tv_logout = (TextView) v.findViewById(R.id.tv_logout);
@@ -86,9 +83,7 @@ public class DashBoardActivity extends BaseActivity implements IBase {
 		TextView tv_buying = (TextView) v.findViewById(R.id.tv_buying);
 		TextView tv_settings = (TextView) v.findViewById(R.id.tv_settings);
 		tv_message = (TextView) v.findViewById(R.id.tv_message);
-		
-		
-		
+
 		tv_home.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -108,8 +103,7 @@ public class DashBoardActivity extends BaseActivity implements IBase {
 				if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
 					mDrawerLayout.closeDrawer(Gravity.LEFT);
 				}
-				Intent i = new Intent(DashBoardActivity.this,
-						SettingsActivity.class);
+				Intent i = new Intent(DashBoardActivity.this, SettingsActivity.class);
 				startActivity(i);
 			}
 		});
@@ -119,10 +113,8 @@ public class DashBoardActivity extends BaseActivity implements IBase {
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				app.getUserinfo().clearPref();
-				Intent i = new Intent(DashBoardActivity.this,
-						LoginActivity.class);
-				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-						| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+				Intent i = new Intent(DashBoardActivity.this, LoginActivity.class);
+				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				startActivity(i);
 			}
 		});
@@ -162,39 +154,35 @@ public class DashBoardActivity extends BaseActivity implements IBase {
 		});
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setHomeButtonEnabled(true);
+		getActionBar().setHomeButtonEnabled(app.getUserinfo().isLoggedin);
 
-		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-				R.drawable.ic_drawer, // nav menu toggle icon
+		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, // nav
+																								// menu
+																								// toggle
+																								// icon
 				R.string.app_name, // nav drawer open - description for
 									// accessibility
 				R.string.app_name // nav drawer close - description for
 									// accessibility
-		) {
-			@Override
-			public boolean onOptionsItemSelected(MenuItem item) {
-				if (item != null && item.getItemId() == android.R.id.home) {
-					if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
-						mDrawerLayout.closeDrawer(Gravity.LEFT);
-					} else {
-						mDrawerLayout.openDrawer(Gravity.LEFT);
-					}
-				}
-				return false;
-			}
-
-			public void onDrawerClosed(View view) {
-				// getActionBar().setTitle(getResources().getString(R.string.home));
-				// calling onPrepareOptionsMenu() to show action bar icons
-				invalidateOptionsMenu();
-			}
-
-			public void onDrawerOpened(View drawerView) {
-				// getActionBar().setTitle(getResources().getString(R.string.menu));
-				// calling onPrepareOptionsMenu() to hide action bar icons
-				invalidateOptionsMenu();
-			}
-		};
+		);/*
+		 * {
+		 * 
+		 * @Override public boolean onOptionsItemSelected(MenuItem item) { if
+		 * (item != null && item.getItemId() == android.R.id.home) { if
+		 * (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
+		 * mDrawerLayout.closeDrawer(Gravity.LEFT); } else {
+		 * mDrawerLayout.openDrawer(Gravity.LEFT); } } return false; }
+		 * 
+		 * public void onDrawerClosed(View view) { //
+		 * getActionBar().setTitle(getResources().getString(R.string.home)); //
+		 * calling onPrepareOptionsMenu() to show action bar icons
+		 * invalidateOptionsMenu(); }
+		 * 
+		 * public void onDrawerOpened(View drawerView) { //
+		 * getActionBar().setTitle(getResources().getString(R.string.menu)); //
+		 * calling onPrepareOptionsMenu() to hide action bar icons
+		 * invalidateOptionsMenu(); } };
+		 */
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
 		if (!app.getUserinfo().isFirstLoggedin) {
@@ -202,12 +190,17 @@ public class DashBoardActivity extends BaseActivity implements IBase {
 			// showChangePasswordDialog();
 			displayView(0, false);
 		} else {
-			displayView(1, false);
+			if (app.getUserinfo().isLoggedin) {
+				displayView(1, false);
+			} else {
+				displayView(3, true);
+			}
+
 		}
 
 	}
 
-	private void displayView(int position ,boolean flag) {
+	private void displayView(int position, boolean flag) {
 		Fragment fragment = null;
 		switch (position) {
 
@@ -217,6 +210,7 @@ public class DashBoardActivity extends BaseActivity implements IBase {
 			break;
 
 		case 1:
+
 			getActionBar().setTitle("Farmers-cart");
 			fragment = new HomeFragment(this);
 			break;
@@ -225,12 +219,12 @@ public class DashBoardActivity extends BaseActivity implements IBase {
 			getActionBar().setTitle("Selling");
 			fragment = new SellingFragment(this);
 			break;
-			
+
 		case 3:
 			getActionBar().setTitle("Buying");
 			fragment = new BuyingFragment(this);
 			break;
-			
+
 		case 4:
 			getActionBar().setTitle(selling_category_title);
 			fragment = new SellingItemFragment(this);
@@ -239,15 +233,15 @@ public class DashBoardActivity extends BaseActivity implements IBase {
 			fragment.setArguments(s);
 			break;
 		case 5:
-		    getActionBar().setTitle(buying_category_title);
+			getActionBar().setTitle(buying_category_title);
 			fragment = new BuyingItemFragment(this);
 			Bundle b = new Bundle();
 			b.putString("buying_category_id", buying_category_id);
 			fragment.setArguments(b);
 			break;
-			
+
 		case 6:
-			 getActionBar().setTitle(selling_each_item_title);
+			getActionBar().setTitle(selling_each_item_title);
 			fragment = new SellingEachItemFragment(this);
 			Bundle selling_each_item = new Bundle();
 			selling_each_item.putString("selling_each_item_id", selling_each_item_id);
@@ -256,10 +250,10 @@ public class DashBoardActivity extends BaseActivity implements IBase {
 			selling_each_item.putString("selling_each_item_image", selling_each_item_image);
 			selling_each_item.putString("selling_each_item_description", selling_each_item_description);
 			fragment.setArguments(selling_each_item);
-			break;	
-			
+			break;
+
 		case 7:
-			 getActionBar().setTitle(selling_each_item_title);
+			getActionBar().setTitle(selling_each_item_title);
 			fragment = new BuyingEachItemFragment(this);
 			Bundle buying_each_item = new Bundle();
 			buying_each_item.putString("buying_each_item_id", buying_each_item_id);
@@ -270,36 +264,38 @@ public class DashBoardActivity extends BaseActivity implements IBase {
 			buying_each_item.putString("brand_user_name", brand_user_name);
 			buying_each_item.putString("buying_each_item_description", buying_each_item_description);
 			fragment.setArguments(buying_each_item);
-			break;	
-			
+			break;
+
 		case 8:
 			getActionBar().setTitle("Cart");
 			fragment = new CartFragment(this);
-			break;	
+			break;
 		case 9:
 			getActionBar().setTitle("Message");
 			tv_message.setText("Message");
 			fragment = new MessageFragment(this);
-			break;	
+			break;
 		}
-		
+
 		if (fragment != null) {
 			FragmentManager fragmentManager = getSupportFragmentManager();
-			 FragmentTransaction ft = fragmentManager.beginTransaction();
-			 ft.replace(R.id.dashboard_frame, fragment);
-				if(flag){
-					Log.e("MainActivity", "Reach++++++++++++++");
-					ft.addToBackStack(null);
-				}
+			FragmentTransaction ft = fragmentManager.beginTransaction();
+			ft.replace(R.id.dashboard_frame, fragment);
+			if (flag) {
+				Log.e("MainActivity", "Reach++++++++++++++");
+				ft.addToBackStack(null);
+			}
 			ft.commit();
-			
+
 		} else {
 			Log.e("MainActivity", "Error in creating fragment");
 		}
 	}
-	public void setActionBarTitle(String title){
+
+	public void setActionBarTitle(String title) {
 		getActionBar().setTitle(title);
 	}
+
 	private void showChangePasswordDialog() {
 		// TODO Auto-generated method stub
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -308,31 +304,25 @@ public class DashBoardActivity extends BaseActivity implements IBase {
 
 		// Set an EditText view to get user input
 		View v;
-		LayoutInflater vi = (LayoutInflater) getApplicationContext()
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		v = vi.inflate(R.layout.change_password, null);
-		EditText et_old_password = (EditText) v
-				.findViewById(R.id.et_old_password);
-		EditText et_new_password = (EditText) v
-				.findViewById(R.id.et_new_password);
-		EditText et_new_conf_password = (EditText) v
-				.findViewById(R.id.et_new_conf_password);
+		EditText et_old_password = (EditText) v.findViewById(R.id.et_old_password);
+		EditText et_new_password = (EditText) v.findViewById(R.id.et_new_password);
+		EditText et_new_conf_password = (EditText) v.findViewById(R.id.et_new_conf_password);
 		alert.setView(v);
 
-		alert.setPositiveButton("Submit",
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
+		alert.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
 
-						// Do something with value!
-					}
-				});
+				// Do something with value!
+			}
+		});
 
-		alert.setNegativeButton("Cancel",
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-						// Canceled.
-					}
-				});
+		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				// Canceled.
+			}
+		});
 
 		alert.show();
 	}
@@ -398,8 +388,7 @@ public class DashBoardActivity extends BaseActivity implements IBase {
 	}
 
 	@Override
-	public void goBuyingFragmentItem(String getmBuyingCategoryId,
-			String getmBuyingCategoryName) {
+	public void goBuyingFragmentItem(String getmBuyingCategoryId, String getmBuyingCategoryName) {
 		// TODO Auto-generated method stub
 		buying_category_title = getmBuyingCategoryName;
 		buying_category_id = getmBuyingCategoryId;
@@ -407,9 +396,7 @@ public class DashBoardActivity extends BaseActivity implements IBase {
 	}
 
 	@Override
-	public void goSellingFragmentItemDetail(String getmSellingSubCategoryId,
-			String getmSellingSubCategoryName, String string,
-			String getmSellingSubCategoryDesc, String string2) {
+	public void goSellingFragmentItemDetail(String getmSellingSubCategoryId, String getmSellingSubCategoryName, String string, String getmSellingSubCategoryDesc, String string2) {
 		// TODO Auto-generated method stub
 		selling_each_item_id = getmSellingSubCategoryId;
 		selling_each_item_title = getmSellingSubCategoryName;
@@ -420,12 +407,7 @@ public class DashBoardActivity extends BaseActivity implements IBase {
 	}
 
 	@Override
-	public void goBuyingFragmentItemDetail(String getmBuyingSubCategoryId,
-			String getmBuyingSubCategoryName,
-			String getmBuyingSubCategoryImage,
-			String getmBuyingSubCategoryPrice,
-			String getmBuyingSubCategoryDescription, String user_id,
-			String user_name) {
+	public void goBuyingFragmentItemDetail(String getmBuyingSubCategoryId, String getmBuyingSubCategoryName, String getmBuyingSubCategoryImage, String getmBuyingSubCategoryPrice, String getmBuyingSubCategoryDescription, String user_id, String user_name) {
 		// TODO Auto-generated method stub
 		buying_each_item_id = getmBuyingSubCategoryId;
 		buying_each_item_title = getmBuyingSubCategoryName;
@@ -442,67 +424,90 @@ public class DashBoardActivity extends BaseActivity implements IBase {
 		// TODO Auto-generated method stub
 		displayView(8, true);
 	}
-	
-	class T extends Thread implements Runnable{
+
+	class T extends Thread implements Runnable {
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
 			super.run();
-			
+
 			new callMessage().execute();
-			
-			
-			
-			
+
 		}
 	}
 
 	@Override
 	public void getUnreadMessage() {
 		// TODO Auto-generated method stub
-		mHandle.postDelayed(new T(), 60*1000);
+		mHandle.postDelayed(new T(), 60 * 1000);
 	}
-	
-	public class callMessage extends AsyncTask<String, Void, Boolean>{
-		protected void onPreExecute() {			
+
+	public class callMessage extends AsyncTask<String, Void, Boolean> {
+		protected void onPreExecute() {
 		}
-		
+
 		@Override
 		protected Boolean doInBackground(String... params) {
-		  	try {
-		  		JSONObject jsonObjSend = new JSONObject();
-		  		jsonObjSend.put("user_id", app.getUserinfo().ID);
-		  		jsonObjSend.put("flag", "0");
+			try {
+				JSONObject jsonObjSend = new JSONObject();
+				jsonObjSend.put("user_id", app.getUserinfo().ID);
+				jsonObjSend.put("flag", "0");
 				Log.e("SEND", jsonObjSend.toString());
-				JSONObject json = FarmersFarmFresh2Home.SendHttpPost(Constant.URLS.GET_MESSAGE.getURL(),jsonObjSend);
-				boolean status=json.getBoolean("status");
-				
-				if(status){
+				JSONObject json = FarmersFarmFresh2Home.SendHttpPost(Constant.URLS.GET_MESSAGE.getURL(), jsonObjSend);
+				boolean status = json.getBoolean("status");
+
+				if (status) {
 					JSONArray arr = json.getJSONArray("message");
-					for(int i = 0 ; i<arr.length();i++){
+					for (int i = 0; i < arr.length(); i++) {
 						JSONObject obj = arr.getJSONObject(i);
-						mMessageBean.add(new MessageBean(obj.getString("user_id"), obj.getString("name"),
-								obj.getString("message"), obj.getString("create_date"), obj.getString("opening_flag")));
-						if(obj.getString("opening_flag").equals("N")){
-							message_counter++ ;
+						mMessageBean.add(new MessageBean(obj.getString("user_id"), obj.getString("name"), obj.getString("message"), obj.getString("create_date"), obj.getString("opening_flag")));
+						if (obj.getString("opening_flag").equals("N")) {
+							message_counter++;
 						}
 					}
 				}
-				
+
 				return status;
-					
-				
+
 			} catch (JSONException e) {
-				e.printStackTrace(); 
+				e.printStackTrace();
 				return false;
-				
-			}			
+
+			}
 		}
+
 		protected void onPostExecute(Boolean status) {
-			if(message_counter>0){
-				tv_message.setText("Messages("+message_counter+")");
+			if (message_counter > 0) {
+				tv_message.setText("Messages(" + message_counter + ")");
 			}
 			getUnreadMessage();
 		}
+	}
+
+	public void onEvent(EventGuestCheckout event) {
+
+		Intent intent = new Intent(DashBoardActivity.this, LoginActivity.class);
+		startActivity(intent);
+		// DashBoardActivity.this.finish();
+
+	}
+
+	public void onEvent(EventAddtoCart event) {
+
+		displayView(8, true);
+
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		EventBus.getDefault().unregister(this);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setHomeButtonEnabled(app.getUserinfo().isLoggedin);
 	}
 }
