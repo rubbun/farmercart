@@ -7,9 +7,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -46,7 +48,15 @@ import com.FarmersCart.Fragment.SellingFragment;
 import com.FarmersCart.Fragment.SellingItemFragment;
 import com.FarmersCart.Interface.IBase;
 import com.FarmersCart.Network.FarmersFarmFresh2Home;
+import com.FarmersCart.Util.AlertDialogManager;
+import com.FarmersCart.Util.ConnectionDetector;
+import com.FarmersCart.Util.ServerUtilities;
+import com.FarmersCart.Util.WakeLocker;
+import com.google.android.gcm.GCMRegistrar;
 
+import static com.FarmersCart.Util.CommonUtilities.DISPLAY_MESSAGE_ACTION;
+import static com.FarmersCart.Util.CommonUtilities.EXTRA_MESSAGE;
+import static com.FarmersCart.Util.CommonUtilities.SENDER_ID;
 import de.greenrobot.event.EventBus;
 
 public class DashBoardActivity extends BaseActivity implements IBase {
@@ -62,6 +72,9 @@ public class DashBoardActivity extends BaseActivity implements IBase {
 
 	private ArrayList<MessageBean> mMessageBean = new ArrayList<MessageBean>();
 	private Handler mHandle = new Handler();
+	private AsyncTask<Void, Void, Void> mRegisterTask;
+	private AlertDialogManager alert                           = new AlertDialogManager();
+	private ConnectionDetector cd;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -196,6 +209,12 @@ public class DashBoardActivity extends BaseActivity implements IBase {
 				displayView(3, true);
 			}
 
+		}
+		registerReceiver(mHandleMessageReceiver, new IntentFilter(	DISPLAY_MESSAGE_ACTION));
+		
+		if(app.getUserinfo().isLoggedin){
+			Constant.user_id = app.getUserinfo().ID;
+			getPushNotificationDeviceID();
 		}
 
 	}
@@ -516,8 +535,10 @@ public class DashBoardActivity extends BaseActivity implements IBase {
 
 	@Override
 	protected void onDestroy() {
-		super.onDestroy();
+		
+		unregisterReceiver(mHandleMessageReceiver);
 		EventBus.getDefault().unregister(this);
+		super.onDestroy();
 	}
 
 	@Override
@@ -526,4 +547,59 @@ public class DashBoardActivity extends BaseActivity implements IBase {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(app.getUserinfo().isLoggedin);
 	}
+	
+	
+	public void getPushNotificationDeviceID() {
+		cd = new ConnectionDetector(getApplicationContext());
+		if (!cd.isConnectingToInternet()) {
+			alert.showAlertDialog(DashBoardActivity.this, "Internet Connection Error","Please connect to working Internet connection", false);
+			return;
+		}
+
+		GCMRegistrar.checkDevice(this);
+		GCMRegistrar.checkManifest(this);
+		registerReceiver(mHandleMessageReceiver, new IntentFilter(	DISPLAY_MESSAGE_ACTION));
+
+		final String regId = GCMRegistrar.getRegistrationId(this);
+
+		if (regId.equals("")) {
+			GCMRegistrar.register(getApplicationContext(), SENDER_ID);
+		} else {
+			GCMRegistrar.register(getApplicationContext(), SENDER_ID);
+			if (GCMRegistrar.isRegisteredOnServer(this)) {
+
+			} else {
+				final Context context = this;
+				mRegisterTask = new AsyncTask<Void, Void, Void>() {
+					@Override
+					protected Void doInBackground(Void... params) {
+						ServerUtilities.register(context, regId, app.getUserinfo().ID);
+						return null;
+					}
+
+					@Override
+					protected void onPostExecute(Void result) {
+						mRegisterTask = null;
+					}
+
+				};
+				mRegisterTask.execute(null, null, null);
+			}
+		}
+
+	}
+	
+	private final BroadcastReceiver mHandleMessageReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			String newMessage = intent.getExtras().getString(EXTRA_MESSAGE);
+			WakeLocker.acquire(getApplicationContext());
+			
+			
+
+			WakeLocker.release();
+		}
+	};
+	
+	
 }

@@ -9,6 +9,7 @@ public class Constant {
 	public static String sSelling_category_title = "" ;
 	public static String sSelling_category_id = "";
 	public static ArrayList<CartBean> sCartBean = new ArrayList<CartBean>();
+	public static String user_id = "";
 	public enum values {
 		PREF_FIRST_LOGIN,USRINFO,ID,PASSWORD,LANG, FIRSTNAME, LASTNAME , PHONE_NUMBER,OPTIONAL_PHONE_NUMBER,IS_LOGGEDIN,IS_FIRST_LOGIN ,CITY,STATE,COUNTRY;
 
@@ -29,7 +30,8 @@ public class Constant {
 		SETTINGS("http://www.devlpconsole.com/farm2Home/settings.php"),
 		GET_BRAND("http://www.devlpconsole.com/farm2Home/get_brand.php"),
 		CHECKOUT("http://www.devlpconsole.com/farm2Home/checkout.php"),
-		GET_MESSAGE("http://www.devlpconsole.com/farm2Home/get_message.php");
+		GET_MESSAGE("http://www.devlpconsole.com/farm2Home/get_message.php"),
+		GCM("http://www.devlpconsole.com/farm2Home/gcm.php");
 		
 		public String mURL;
 		

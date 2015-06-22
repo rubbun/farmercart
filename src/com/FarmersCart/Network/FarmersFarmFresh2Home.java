@@ -21,6 +21,7 @@ public class FarmersFarmFresh2Home {
 	public static JSONObject SendHttpPost(String URL, JSONObject jsonObjSend) {
 
 		try {
+			System.out.println("!!!! req "+jsonObjSend.toString());
 			DefaultHttpClient httpclient = new DefaultHttpClient();
 			HttpPost httpPostRequest = new HttpPost(URL);
 
