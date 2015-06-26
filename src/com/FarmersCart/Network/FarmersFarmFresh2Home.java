@@ -52,6 +52,7 @@ public class FarmersFarmFresh2Home {
 
 				JSONObject jsonObjRecv = new JSONObject(resultString);
 				Log.i(TAG,"<JSONObject>\n"+jsonObjRecv.toString()+"\n</JSONObject>");
+				System.out.println("@@@@  "+jsonObjRecv.toString());
 
 				return jsonObjRecv;
 			} 

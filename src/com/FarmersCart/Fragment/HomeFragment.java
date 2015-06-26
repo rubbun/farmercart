@@ -201,9 +201,10 @@ public class HomeFragment extends Fragment implements OnClickListener {
 						JSONArray arr = json_buying.getJSONArray("buying_product");
 						for(int i = 0 ; i<arr.length();i++){
 							JSONObject obj = arr.getJSONObject(i);
+							System.out.println("!!!!!!!  "+ obj.getString("transaction_id"));
 							
 							mBuyingHistory.add(new BuyingHistory(obj.getString("id"),obj.getString("category_name"), obj.getString("subcategory_name"), obj.getString("subcategory_id"), obj.getString("subcategory_image"),obj.getString("brand_id"),obj.getString("brand_name"), obj.getString("subcategory_price"), obj.getString("quantity"),
-									obj.getString("total_cost"), obj.getString("delivery_type")));
+									obj.getString("total_cost"), obj.getString("delivery_type"), obj.getString("transaction_id"), obj.getString("status")));
 						}
 					}
 					

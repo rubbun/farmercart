@@ -74,7 +74,7 @@ public class MessageFragment extends Fragment implements OnClickListener {
 					for(int i = 0 ; i<arr.length();i++){
 						JSONObject obj = arr.getJSONObject(i);
 						mMessageBean.add(new MessageBean(obj.getString("user_id"), obj.getString("name"),
-								obj.getString("message"),obj.getString("phone"),obj.getString("address"), obj.getString("create_date"), obj.getString("opening_flag")));
+								obj.getString("message"),obj.getString("phone"),obj.getString("address"), obj.getString("create_date"), obj.getString("opening_flag"),obj.getString("status"),obj.getString("transaction_id")));
 					}
 				}
 				
@@ -93,7 +93,7 @@ public class MessageFragment extends Fragment implements OnClickListener {
 			if(status){
 				tv_no_message.setVisibility(View.GONE);
 				lv_message.setVisibility(View.VISIBLE);
-				lv_message.setAdapter(new MessageAdapter(getActivity(), R.layout.each_grid, mMessageBean));
+				lv_message.setAdapter(new MessageAdapter(getActivity(), MessageFragment.this,R.layout.each_grid, mMessageBean));
 				/*for(int i = 0 ; i<mMessageBean.size();i++){
 					mMessageBean.get(i).setmMessageOpenFlag("Y");
 				}*/
@@ -109,6 +109,53 @@ public class MessageFragment extends Fragment implements OnClickListener {
 	public void onClick(View arg0) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public int pos;
+	
+	public void onStatusChange(String transaction_id, String status, int pos){
+		this.pos = pos;
+		new UpdateStatus().execute(transaction_id,status);
+	}
+	
+	
+	public class UpdateStatus extends AsyncTask<String, Void, Boolean>{
+		
+		
+		protected void onPreExecute() {
+			base.showProgressDailog("Please wait...");
+		}
+		
+		@Override
+		protected Boolean doInBackground(String... params) {
+		  	try {
+		  		
+		  		JSONObject jsonObjSend = new JSONObject();
+		  		jsonObjSend.put("transaction_id", params[0]);
+		  		jsonObjSend.put("status", params[1]);
+				Log.e("SEND", jsonObjSend.toString());
+				JSONObject json = FarmersFarmFresh2Home.SendHttpPost(Constant.URLS.UPDATE_STATUS.getURL(),jsonObjSend);
+				boolean status=json.getBoolean("status");
+				
+				if(status){
+					mMessageBean.get(pos).setStatus(params[1]);
+				}
+				
+				return status;
+					
+				
+			} catch (JSONException e) {
+				e.printStackTrace(); 
+				base.dismissProgressDialog();
+				return false;
+				
+			}			
+		}
+		protected void onPostExecute(Boolean status) {	
+			base.dismissProgressDialog();
+			lv_message.setAdapter(new MessageAdapter(getActivity(), MessageFragment.this,R.layout.each_grid, mMessageBean));
+			
+		}
 	}
 
 }

@@ -495,7 +495,7 @@ public class DashBoardActivity extends BaseActivity implements IBase {
 					JSONArray arr = json.getJSONArray("message");
 					for (int i = 0; i < arr.length(); i++) {
 						JSONObject obj = arr.getJSONObject(i);
-						mMessageBean.add(new MessageBean(obj.getString("user_id"), obj.getString("name"), obj.getString("message"),obj.getString("phone"),obj.getString("address"), obj.getString("create_date"), obj.getString("opening_flag")));
+						mMessageBean.add(new MessageBean(obj.getString("user_id"), obj.getString("name"), obj.getString("message"),obj.getString("phone"),obj.getString("address"), obj.getString("create_date"), obj.getString("opening_flag"),obj.getString("status"),obj.getString("transaction_id")));
 						if (obj.getString("opening_flag").equals("N")) {
 							message_counter++;
 						}

@@ -31,7 +31,8 @@ public class Constant {
 		GET_BRAND("http://www.devlpconsole.com/farm2Home/get_brand.php"),
 		CHECKOUT("http://www.devlpconsole.com/farm2Home/checkout.php"),
 		GET_MESSAGE("http://www.devlpconsole.com/farm2Home/get_message.php"),
-		GCM("http://www.devlpconsole.com/farm2Home/gcm.php");
+		GCM("http://www.devlpconsole.com/farm2Home/gcm.php"),
+		UPDATE_STATUS("http://www.devlpconsole.com/farm2Home/update_status.php");
 		
 		public String mURL;
 		

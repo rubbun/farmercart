@@ -31,6 +31,7 @@ public class BuyingHistoryAdapter extends ArrayAdapter<BuyingHistory>{
 		// TODO Auto-generated constructor stub
 		this.activity=activity;
 		this.arr = items;
+		System.out.println("!!!!! hhhh "+arr.get(0).getmBuyingTransactionId());
 		imageLoader = new ImageLoader(activity);
 		iBase = (IBase) activity;
 	}
@@ -50,6 +51,8 @@ public class BuyingHistoryAdapter extends ArrayAdapter<BuyingHistory>{
 			mHolder.tv_total_price=(TextView)v.findViewById(R.id.tv_total_price);
 			mHolder.tv_delivery_type=(TextView)v.findViewById(R.id.tv_delivery_type);
 			mHolder.tv_brand_name=(TextView)v.findViewById(R.id.tv_brand_nname);
+			mHolder.tv_trans=(TextView)v.findViewById(R.id.tv_trans);
+			mHolder.tv_status=(TextView)v.findViewById(R.id.tv_status);
 			
 			v.setTag(mHolder);
 			
@@ -68,14 +71,28 @@ public class BuyingHistoryAdapter extends ArrayAdapter<BuyingHistory>{
 		mHolder.tv_total_price.setText(activity.getResources().getString(R.string.total_price)+arr.get(position).getmBuyingTotalPrice());
 		mHolder.tv_delivery_type.setText(activity.getResources().getString(R.string.brand)+arr.get(position).getmBuyingBrandName());
 		mHolder.tv_brand_name.setText(activity.getResources().getString(R.string.delivery_type)+arr.get(position).getmBuyingProductDeliveryType());
-		
+		System.out.println("!!!!!!!! AAAAA "+arr.get(position).getmBuyingTransactionId());
+		mHolder.tv_trans.setText("Transaction Id:  "+ arr.get(position).getmBuyingTransId());
+		if(arr.get(position).getmBuyingStatus().equalsIgnoreCase("0")){
+			mHolder.tv_status.setText("STATUS: Waiting for aprouval");
+			
+		}else{
+			
+			if(arr.get(position).getmBuyingStatus().equalsIgnoreCase("-1")){
+				mHolder.tv_status.setText("STATUS: Reject ");	
+			}else if(arr.get(position).getmBuyingStatus().equalsIgnoreCase("1")){
+				mHolder.tv_status.setText("STATUS: Out for devilery");
+			}else{
+				mHolder.tv_status.setText("STATUS: You have received");
+			}
+		}
 		
 		return v;
 	}
 	
 	public class ViewHolder {	
 		public ImageView iv_sell_image;
-		public TextView tv_category,tv_sub_category,tv_price,tv_quantity,tv_total_price,tv_delivery_type,tv_brand_name ;
+		public TextView tv_category,tv_sub_category,tv_price,tv_quantity,tv_total_price,tv_delivery_type,tv_brand_name,tv_trans,tv_status ;
 	}
 
 }

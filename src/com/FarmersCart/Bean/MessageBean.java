@@ -8,8 +8,10 @@ public class MessageBean {
 	private String address;
 	private String mTime;
 	private String mMessageOpenFlag;
+	private String status;
+	private String transaction_id;
 
-	public MessageBean(String mUserName, String mUserId, String mMessage, String phone, String address, String mTime, String mMessageOpenFlag) {
+	public MessageBean(String mUserName, String mUserId, String mMessage, String phone, String address, String mTime, String mMessageOpenFlag,String status,String transaction_id) {
 		super();
 		this.mUserName = mUserName;
 		this.mUserId = mUserId;
@@ -18,6 +20,8 @@ public class MessageBean {
 		this.address = address;
 		this.mTime = mTime;
 		this.mMessageOpenFlag = mMessageOpenFlag;
+		this.status = status;
+		this.transaction_id = transaction_id;
 	}
 
 	public String getmUserName() {
@@ -75,5 +79,23 @@ public class MessageBean {
 	public void setmMessageOpenFlag(String mMessageOpenFlag) {
 		this.mMessageOpenFlag = mMessageOpenFlag;
 	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getTransaction_id() {
+		return transaction_id;
+	}
+
+	public void setTransaction_id(String transaction_id) {
+		this.transaction_id = transaction_id;
+	}
+	
+	
 
 }
